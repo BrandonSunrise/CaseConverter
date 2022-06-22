@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+</head>
+<body>
+<div class="title">Case Converter</div>
+    <textarea id="text-area" rows="4" cols="50"></textarea>
+    <button id="upper-case">Upper</button>
+    <button id="lower-case">Lower</button>
+    <button id="proper-case">Proper</button>
+    <button id="sentence-case">Sentence</button>
+    <button id="save-text-file">Save text file</button>
+    <button id="copy-to-buffer">Copy to buffer</button>
+<script>
+    function upperCase() {
+    let doc = document.getElementById("text-area");
+    doc.value = doc.value.toUpperCase();
+}
+function lowerCase() {
+    let doc = document.getElementById("text-area");
+    doc.value = doc.value.toLowerCase();
+}
+function properCase(){
+        let doc = document.getElementById("text-area");
+        doc.value =doc.value.replace(/\w\S*/g, function(letter){return letter.charAt(0).toUpperCase() + letter.substr(1).toLowerCase();});
+    }
+    function sentenceCase(){
+        let doc = document.getElementById("text-area");
+        doc.value = doc.value.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function (letter) {
+            return letter.toUpperCase();
+        }).trim();
+    }
+    function savetextFile() {
+        let text = document.getElementById("text-area").value;
+        let filename = "text.txt";
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+    function copyToBuffer(){
+        document.getElementById("text-area").select();
+        document.execCommand('copy');
+    }
+    document.getElementById("upper-case").addEventListener('click', upperCase);
+    document.getElementById("lower-case").addEventListener('click', lowerCase);
+    document.getElementById("proper-case").addEventListener('click', properCase);
+    document.getElementById("sentence-case").addEventListener('click', sentenceCase);
+    document.getElementById("save-text-file").addEventListener('click', savetextFile);
+    document.getElementById("copy-to-buffer").addEventListener('click', copyToBuffer);
+</script>
+
+</body>
+</html>
